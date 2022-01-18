@@ -7,7 +7,11 @@ interface MenuProps {}
 
 const Menu = () => {
   return (
-    <aside className="flex flex-col">
+    <aside
+      className="flex flex-col 
+                    bg-gray-200 text-gray-900 
+                    dark:bg-gray-900 dark:text-gray-200 "
+    >
       <div
         className={`h-20 w-20 bg-gradient-to-tr from-indigo-500 
                   to-purple-800 flex flex-col justify-center 
@@ -25,7 +29,11 @@ const Menu = () => {
           onClick={() => console.log("logout")}
           text="Sair"
           icon={IconLogout}
-          className="text-red-600 hover:bg-red-400 hover:text-white"
+          className="text-red-600 
+                    hover:bg-red-400 
+                    hover:text-white 
+                    dark:text-red-400
+                    dark:hover:text-white"
         />
       </ul>
     </aside>

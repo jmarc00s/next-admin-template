@@ -16,16 +16,20 @@ const MenuItem = ({ icon, url, text, onClick, className }: MenuItemProps) => {
         className={`flex flex-col justify-center 
                     items-center w-20 h-20 px-3 
                     text-gray-600
+                    dark:text-gray-200
                     ${className}`}
       >
         {icon}
-        <span className="text-xs font-light ">{text}</span>
+        <span className="text-xs font-light mt-1">{text}</span>
       </a>
     );
   }
 
   return (
-    <li className={`hover:bg-gray-100 cursor-pointer`} onClick={onClick}>
+    <li
+      className={`hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer`}
+      onClick={onClick}
+    >
       {url ? <Link href={url}>{renderLink()}</Link> : renderLink()}
     </li>
   );
