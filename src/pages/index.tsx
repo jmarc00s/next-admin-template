@@ -3,7 +3,7 @@ import Layout from "../components/template/Layout";
 
 const Home: NextPage = () => {
   return (
-    <Layout title="Titulo" subTitle="subtitulo">
+    <Layout title="Página inicial" subTitle="Bem Vindo!">
       <h3>Conteudo</h3>
     </Layout>
   );
