@@ -8,8 +8,8 @@ interface TitleProps {
 const Title = ({ title, subTitle }: TitleProps) => {
   return (
     <div>
-      <h1 className="">{title}</h1>
-      <h2 className="">{subTitle}</h2>
+      <h1 className="font-black text-3xl text-gray-900">{title}</h1>
+      <h2 className="font-light text-sm text-gray-600">{subTitle}</h2>
     </div>
   );
 };

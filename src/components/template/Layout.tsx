@@ -11,7 +11,7 @@ interface LayoutProps {
 
 const Layout = ({ title, subTitle, children }: LayoutProps) => {
   return (
-    <main className="dark flex h-screen w-screen">
+    <main className="flex h-screen w-screen">
       <Menu />
       <div className="flex flex-col flex-1 bg-gray-300 p-7 dark:bg-gray-800">
         <Header title={title} subTitle={subTitle} />
