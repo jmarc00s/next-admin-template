@@ -9,9 +9,10 @@ interface AuthContextProps {
   user?: UserModel;
   authGoogle?: () => Promise<void>;
   logout?: () => Promise<void>;
+  loading: boolean;
 }
 
-const AuthContext = createContext<AuthContextProps>({});
+const AuthContext = createContext<AuthContextProps>({ loading: true });
 interface AuthProviderProps {
   children?: any;
 }
@@ -104,12 +105,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const unsubscribe = firebase.auth().onIdTokenChanged(configureSession);
       return () => unsubscribe();
     }
-
+    setLoading(false);
     route.push('/login');
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, authGoogle, logout }}>
+    <AuthContext.Provider value={{ user, authGoogle, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
