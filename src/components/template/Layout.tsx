@@ -1,5 +1,7 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 import useAppData from '../../data/hook/useAppData';
+import useAuth from '../../data/hook/useAuth';
 import Content from './Content';
 import Header from './Header';
 import Menu from './menu/Menu';
@@ -12,16 +14,21 @@ interface LayoutProps {
 
 const Layout = ({ title, subTitle, children }: LayoutProps) => {
   const { theme } = useAppData();
+  const { user } = useAuth();
 
-  return (
-    <main className={`flex h-screen w-screen ${theme}`}>
-      <Menu />
-      <div className="flex flex-col flex-1 bg-gray-300 p-7 dark:bg-gray-800">
-        <Header title={title} subTitle={subTitle} />
-        <Content>{children}</Content>
-      </div>
-    </main>
-  );
+  if (user) {
+    return (
+      <main className={`flex h-screen w-screen ${theme}`}>
+        <Menu />
+        <div className="flex flex-col flex-1 bg-gray-300 p-7 dark:bg-gray-800">
+          <Header title={title} subTitle={subTitle} />
+          <Content>{children}</Content>
+        </div>
+      </main>
+    );
+  }
+
+  return null;
 };
 
 export default Layout;

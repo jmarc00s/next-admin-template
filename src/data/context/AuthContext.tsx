@@ -68,6 +68,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     manageCookie(false);
     setUser(undefined);
     setLoading(false);
+    route.push('/login');
 
     return false;
   }
@@ -103,6 +104,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const unsubscribe = firebase.auth().onIdTokenChanged(configureSession);
       return () => unsubscribe();
     }
+
+    route.push('/login');
   }, []);
 
   return (
