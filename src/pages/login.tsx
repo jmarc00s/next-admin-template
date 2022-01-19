@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React, { useState } from 'react';
 import AuthInput from '../components/auth/AuthInput';
 
@@ -17,9 +18,19 @@ const Login = () => {
   }
 
   return (
-    <div className="flex flex-col h-screen justify-center items-center">
-      <div className={`w-1/2`}>
-        <h1 className={`text-xl font-bold mb-5`}>
+    <div className="flex h-screen justify-center items-center">
+      <div
+        className={`hidden md:flex-1 md:flex justify-center items-center xl:w-2/3`}
+      >
+        {/* <Image
+          src="https://source.unsplash.com/random"
+          alt="Auth image"
+          layout="fill"
+        /> */}
+        <h3>Imagem</h3>
+      </div>
+      <div className={`p-3 md:p-10 md:w-1/2 xl:w-1/3`}>
+        <h1 className={`text-3xl font-bold mb-5`}>
           {mode === 'signin'
             ? 'Entre com sua conta'
             : 'Cadastre-se na plataforma'}
@@ -57,6 +68,28 @@ const Login = () => {
         >
           Entrar com Google
         </button>
+
+        {mode === 'signin' ? (
+          <p className="mt-8 text-center">
+            Novo por aqui ?
+            <a
+              onClick={() => setMode('signup')}
+              className={`text-blue-500 hover:text-blue-700 font-semibold cursor-pointer ml-2`}
+            >
+              Crie uma conta gratuitamente
+            </a>
+          </p>
+        ) : (
+          <p className="mt-8 text-center">
+            Já faz parte da nossa comunidade ?
+            <a
+              onClick={() => setMode('signin')}
+              className={`text-blue-500 hover:text-blue-700 font-semibold cursor-pointer ml-2`}
+            >
+              Entre com suas credenciais
+            </a>
+          </p>
+        )}
       </div>
     </div>
   );
