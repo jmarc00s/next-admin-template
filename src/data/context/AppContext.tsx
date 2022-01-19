@@ -1,14 +1,29 @@
-import { createContext } from "react";
+import { createContext, useState } from 'react';
 
-const AppContext = createContext({});
+type Theme = 'dark' | '';
+interface AppContextModel {
+  theme: Theme;
+  changeTheme: () => void;
+}
+
+const AppContext = createContext<AppContextModel>({
+  theme: 'dark',
+  changeTheme: () => {},
+});
 
 interface AppProviderProps {
   children: any;
 }
 
 export function AppProvider({ children }: AppProviderProps) {
+  const [theme, setTheme] = useState<Theme>('dark');
+
+  function changeTheme() {
+    setTheme(theme === '' ? 'dark' : '');
+  }
+
   return (
-    <AppContext.Provider value={{ text: "Meu texto no Contexto" }}>
+    <AppContext.Provider value={{ theme, changeTheme }}>
       {children}
     </AppContext.Provider>
   );
