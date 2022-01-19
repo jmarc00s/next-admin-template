@@ -4,13 +4,14 @@ import firebase from '../../firebase';
 import UserModel from '../../model/User';
 import Cookies from 'js-cookie';
 
+const AUTH_COOKIE = 'admin-template-auth';
 interface AuthContextProps {
   user?: UserModel;
   authGoogle?: () => Promise<void>;
+  logout?: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextProps>({});
-
 interface AuthProviderProps {
   children?: any;
 }
@@ -38,18 +39,14 @@ async function normalizeUser(
 
 function manageCookie(isAuthenticated: boolean) {
   if (isAuthenticated) {
-    Cookies.set(
-      'admin-template-auth',
-      { isAuthenticated },
-      {
-        expires: 7,
-      }
-    );
+    Cookies.set(AUTH_COOKIE, JSON.stringify(isAuthenticated), {
+      expires: 7,
+    });
 
     return;
   }
 
-  Cookies.remove('admin-template-auth');
+  Cookies.remove(AUTH_COOKIE);
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
@@ -76,23 +73,40 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   async function authGoogle() {
-    const response = await firebase
-      .auth()
-      .signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    try {
+      setLoading(true);
+      const response = await firebase
+        .auth()
+        .signInWithPopup(new firebase.auth.GoogleAuthProvider());
 
-    if (response.user) {
-      configureSession(response.user);
-      route.push('/');
+      if (response.user) {
+        configureSession(response.user);
+        route.push('/');
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function logout() {
+    try {
+      setLoading(true);
+      await firebase.auth().signOut();
+      await configureSession(false);
+    } finally {
+      setLoading(false);
     }
   }
 
   useEffect(() => {
-    const unsubscribe = firebase.auth().onIdTokenChanged(configureSession);
-    return () => unsubscribe();
+    if (Cookies.get(AUTH_COOKIE)) {
+      const unsubscribe = firebase.auth().onIdTokenChanged(configureSession);
+      return () => unsubscribe();
+    }
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, authGoogle }}>
+    <AuthContext.Provider value={{ user, authGoogle, logout }}>
       {children}
     </AuthContext.Provider>
   );

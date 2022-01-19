@@ -1,11 +1,12 @@
-import React from "react";
-import { IconBell, IconHome, IconLogout, IconSettings } from "../../icons";
-import Logo from "./Logo";
-import MenuItem from "./MenuItem";
-
-interface MenuProps {}
+import React from 'react';
+import useAuth from '../../../data/hook/useAuth';
+import { IconBell, IconHome, IconLogout, IconSettings } from '../../icons';
+import Logo from './Logo';
+import MenuItem from './MenuItem';
 
 const Menu = () => {
+  const { logout } = useAuth();
+
   return (
     <aside
       className="flex flex-col 
@@ -26,7 +27,7 @@ const Menu = () => {
       </ul>
       <ul>
         <MenuItem
-          onClick={() => console.log("logout")}
+          onClick={logout}
           text="Sair"
           icon={IconLogout}
           className="text-red-600 
