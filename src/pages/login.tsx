@@ -2,13 +2,14 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import AuthInput from '../components/auth/AuthInput';
 import { IconWarning } from '../components/icons';
+import useAuth from '../data/hook/useAuth';
 
 const Login = () => {
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const { user, authGoogle } = useAuth();
 
   function onSubmit() {
     if (mode === 'signin') {
@@ -80,7 +81,7 @@ const Login = () => {
           className={`w-full bg-red-500 
         text-white rounded-lg hover:bg-red-400
         px-4 py-3`}
-          onClick={onSubmit}
+          onClick={authGoogle}
         >
           Entrar com Google
         </button>
