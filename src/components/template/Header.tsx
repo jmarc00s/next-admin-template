@@ -1,6 +1,7 @@
 import React from 'react';
 import useAppData from '../../data/hook/useAppData';
 import ChangeThemeButton from '../ChangeThemeButton';
+import UserAvatar from '../UserAvatar';
 import Title from './Title';
 
 interface HeaderProps {
@@ -14,8 +15,9 @@ const Header = ({ title, subTitle }: HeaderProps) => {
   return (
     <div className="flex">
       <Title title={title} subTitle={subTitle} />
-      <div className="flex flex-1 justify-end">
+      <div className="flex flex-1 justify-end items-center">
         <ChangeThemeButton theme={theme} changeTheme={changeTheme} />
+        <UserAvatar />
       </div>
     </div>
   );

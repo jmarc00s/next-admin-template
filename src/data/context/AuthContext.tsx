@@ -47,7 +47,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     if (user) {
       setUser(user);
-      console.log(user);
       route.push('/');
     }
   }
