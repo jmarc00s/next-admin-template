@@ -1,12 +1,14 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 import AuthInput from '../components/auth/AuthInput';
+import { IconWarning } from '../components/icons';
 
 const Login = () => {
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   function onSubmit() {
     if (mode === 'signin') {
@@ -15,6 +17,11 @@ const Login = () => {
     }
 
     console.log('Cadastrar');
+  }
+
+  function showError(message: string, timeInSeconds = 5) {
+    setError(message);
+    setTimeout(() => setError(''), timeInSeconds * 1000);
   }
 
   return (
@@ -35,6 +42,15 @@ const Login = () => {
             ? 'Entre com sua conta'
             : 'Cadastre-se na plataforma'}
         </h1>
+
+        {error !== '' ? (
+          <div className="bg-red-400 text-white py-3 px-5 flex rounded-lg border items-center">
+            {IconWarning} <span className="ml-3 font-semibold">{error}</span>
+          </div>
+        ) : (
+          false
+        )}
+
         <AuthInput
           label="Email"
           value={email}
