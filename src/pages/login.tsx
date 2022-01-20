@@ -9,15 +9,31 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { user, authGoogle } = useAuth();
+  const { authGoogle, authWithEmailPassword, createWithEmailPassword } =
+    useAuth();
 
-  function onSubmit() {
-    if (mode === 'signin') {
-      console.log('logar');
-      return;
+  async function onSubmit() {
+    try {
+      if (mode === 'signin') {
+        await signIn(email, password);
+        return;
+      }
+      await signUp(email, password);
+    } catch (error: any) {
+      showError(error?.message ?? 'Não foi possível realizar a operação.');
     }
+  }
 
-    console.log('Cadastrar');
+  async function signIn(email: string, password: string) {
+    if (authWithEmailPassword) {
+      await authWithEmailPassword(email, password);
+    }
+  }
+
+  async function signUp(email: string, password: string) {
+    if (createWithEmailPassword) {
+      await createWithEmailPassword(email, password);
+    }
   }
 
   function showError(message: string, timeInSeconds = 5) {

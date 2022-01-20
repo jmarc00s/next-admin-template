@@ -8,6 +8,8 @@ const AUTH_COOKIE = 'admin-template-auth';
 interface AuthContextProps {
   user?: UserModel;
   authGoogle?: () => Promise<void>;
+  authWithEmailPassword?: (email: string, password: string) => Promise<void>;
+  createWithEmailPassword?: (email: string, password: string) => Promise<void>;
   logout?: () => Promise<void>;
   loading: boolean;
 }
@@ -82,7 +84,39 @@ export function AuthProvider({ children }: AuthProviderProps) {
         .signInWithPopup(new firebase.auth.GoogleAuthProvider());
 
       if (response.user) {
-        configureSession(response.user);
+        await configureSession(response.user);
+        route.push('/');
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function authWithEmailPassword(email: string, password: string) {
+    try {
+      setLoading(true);
+      const response = await firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password);
+
+      if (response.user) {
+        await configureSession(response.user);
+        route.push('/');
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function createWithEmailPassword(email: string, password: string) {
+    try {
+      setLoading(true);
+      const response = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password);
+
+      if (response.user) {
+        await configureSession(response.user);
         route.push('/');
       }
     } finally {
@@ -110,7 +144,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, authGoogle, logout, loading }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        authGoogle,
+        logout,
+        loading,
+        authWithEmailPassword,
+        createWithEmailPassword,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
